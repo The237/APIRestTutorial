@@ -10,13 +10,16 @@ use App\Repository\ArticleRepository;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializationContext;
+
 
 class ArticleController extends AbstractController
 {
     #[Route('/articles/{id}', name: 'article_show')]
-    public function showAction(SerializerInterface $serializer,Article $article)
+    public function showArticleAction(SerializerInterface $serializer,Article $article)
     {    
-        $data = $serializer->serialize($article, 'json');
+        $data = $serializer->serialize($article, 'json',
+        SerializationContext::create()->setGroups(array('detail')));
 
         $response = new Response($data);
         $response->headers->set('Content-type','application/json');
@@ -27,7 +30,7 @@ class ArticleController extends AbstractController
     #[
         Route('/articles', name: 'article_create',methods: ['POST'])
     ]
-    public function createAction(Request $request,SerializerInterface $serializer, EntityManagerInterface $em)
+    public function createArticleAction(Request $request,SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $data = $request->getContent();
         $article = $serializer->deserialize($data,' App\Entity\Article','json');
@@ -41,10 +44,11 @@ class ArticleController extends AbstractController
     #[
         Route('/articles',name: 'article_list',methods: ['GET'])
     ]
-    public function listAction(SerializerInterface $serializer,ArticleRepository $articleRepository)
+    public function listArticleAction(SerializerInterface $serializer,ArticleRepository $articleRepository)
     {
         
-        $data = $serializer->serialize($articleRepository->findAll(),'json');
+        $data = $serializer->serialize($articleRepository->findAll(),'json',
+        SerializationContext::create()->setGroups(array('list')));
 
         $response = new Response($data);
         
