@@ -2,13 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
+
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * Le nom du repository a été rempli ici à la main car le remplissage automatique de Doctrine a créé un bug
  * @ORM\Table()
+ * 
+ * @ExclusionPolicy("all")
  */
 class Article
 {
@@ -17,21 +23,23 @@ class Article
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * 
-     * @Serializer\Groups({"list"})
+     * @Expose
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Expose
+     * @Assert\NotBlank(groups={"Create"})
      * 
-     * @Serializer\Groups({"detail","list"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Expose
+     * @Assert\NotBlank(groups={"Create"})
      * 
-     * @Serializer\Groups({"detail","list"})
      */
     private $content;
 
