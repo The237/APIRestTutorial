@@ -16,6 +16,10 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    http_client:
+        scoped_clients:
+            weather.client:
+                base_uri: http://api.openweathermap.org
 
 when@test:
     framework:

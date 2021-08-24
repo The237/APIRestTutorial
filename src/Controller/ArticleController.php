@@ -14,6 +14,7 @@ use App\Representation\Articles;
 use Symfony\Component\Validator\ConstraintViolationList;
 use App\Exception\ResourceValidationException;
 
+
 class ArticleController extends AbstractFOSRestController
 {
     /**
@@ -109,6 +110,7 @@ class ArticleController extends AbstractFOSRestController
      * )
      * 
      * @Rest\View()
+     * 
      */
     public function listArticleAction(ParamFetcherInterface $paramFetcher)
     {
